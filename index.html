@@ -7,64 +7,203 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0c; color: white; overflow-x: hidden; }
+        
+        /* HIDE DEFAULT WINDOWS CURSOR */
+        html, body, a, button {
+            cursor: none !important;
+        }
+
+        /* CONTAINER FOR CUSTOM CURSOR COMPONENTS */
+        .cursor-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* THE OUTER PURPLE RING */
+        #cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #a855f7;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+        }
+
+        /* THE CENTERED SOLID PURPLE DOT */
+        #cursor-dot {
+            width: 12px;
+            height: 12px;
+            background: #a855f7;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 15px #a855f7;
+        }
+
         .hero-gradient { background: linear-gradient(to right, #a855f7, #ec4899, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-link:hover { color: #a855f7; text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
+        .yt-link:hover { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
     </style>
 </head>
 <body class="selection:bg-purple-500">
 
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="cursor-wrapper">
+        <div id="cursor-ring"></div>
+        <div id="cursor-dot"></div>
+    </div>
+
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
     <nav class="fixed top-0 w-full z-50 bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/5 p-6">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-400">HTX</h1>
-            <div class="flex space-x-8 text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
-                <a href="#" class="hover:text-white transition">Home</a>
-                <a href="#roster" class="hover:text-white transition">Roster</a>
-                <a href="YOUR_DISCORD_LINK_HERE" class="bg-purple-600 text-white px-5 py-2 rounded-full hover:bg-purple-700 transition shadow-lg shadow-purple-600/20">Join Discord</a>
+            <a href="#home" class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-400">HTX</a>
+            <div class="flex items-center space-x-8 text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                <a href="#home" class="nav-link transition">Home</a>
+                <a href="#roster" class="nav-link transition">Roster</a>
+                <a href="#about" class="nav-link transition">About</a>
+                <a href="https://www.youtube.com/@HTXRivalsClan" target="_blank" class="yt-link transition text-red-500">YouTube</a>
+                <a href="https://discord.gg/VJaRcdVhQ" target="_blank" class="bg-purple-600 text-white px-5 py-2 rounded-full hover:bg-purple-700 transition shadow-lg shadow-purple-600/20">Join</a>
             </div>
         </div>
     </nav>
 
-    <section class="relative pt-48 pb-32 px-6 text-center max-w-5xl mx-auto">
-        <h2 class="text-6xl md:text-9xl font-black uppercase mb-6 leading-none tracking-tighter text-white">
-            We Are <br><span class="hero-gradient">HTX Esports</span>
+    <section id="home" class="relative pt-64 pb-32 px-6 text-center max-w-5xl mx-auto min-h-screen">
+        <h2 class="text-6xl md:text-9xl font-black uppercase mb-6 leading-none tracking-tighter">
+            We Are <br><span class="hero-gradient">HTX Clan</span>
         </h2>
         <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-light mb-12 leading-relaxed">
-            Dominating the competitive scene in <span class="text-white font-medium">Fortnite</span>, <span class="text-white font-medium">Valorant</span>, and <span class="text-white font-medium">Roblox</span>. 
+            Dominating the competitive scene in <span class="text-white font-medium">Roblox</span> and <span class="text-white font-medium">Rivals</span>. 
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#roster" class="bg-white text-black font-black px-10 py-4 rounded-xl hover:bg-gray-200 transition uppercase text-[11px] tracking-widest text-center">The Roster</a>
-            <a href="YOUR_DISCORD_LINK_HERE" class="glass px-10 py-4 rounded-xl hover:bg-white/10 transition uppercase text-[11px] tracking-widest font-bold text-center">Apply Now</a>
+            <a href="#roster" class="bg-white text-black font-black px-10 py-4 rounded-xl hover:bg-gray-200 transition uppercase text-[11px] tracking-widest text-center">View Roster</a>
+            <a href="https://discord.gg/VJaRcdVhQ" target="_blank" class="glass px-10 py-4 rounded-xl hover:bg-white/10 transition uppercase text-[11px] tracking-widest font-bold text-center">Apply Now</a>
         </div>
     </section>
 
-    <section id="roster" class="max-w-7xl mx-auto px-6 py-20">
-        <h3 class="text-4xl font-black uppercase mb-12 tracking-tighter italic">The Elite Roster</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="glass p-6 rounded-2xl border-l-4 border-purple-500">
-                <p class="text-[10px] font-bold uppercase text-purple-400 mb-1">Owner / Leader</p>
-                <h4 class="text-xl font-black italic uppercase">Augustine</h4>
+    <section id="roster" class="max-w-7xl mx-auto px-6 py-32 border-t border-white/5">
+        <div class="mb-16">
+            <h3 class="text-5xl font-black uppercase tracking-tighter italic mb-4">The Elite Roster</h3>
+            <p class="text-gray-500 max-w-lg">The leadership and core squad commanding the lobby fields.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div class="glass p-8 rounded-3xl border-l-4 border-purple-500 hover:scale-105 transition-transform lg:col-span-3 max-w-md mx-auto w-full">
+                <p class="text-[10px] font-bold uppercase text-purple-400 mb-2">Clan Owner</p>
+                <h4 class="text-2xl font-black italic uppercase mb-4">heromaxlion</h4>
+                <div class="flex space-x-2">
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Leader</span>
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Competitive</span>
+                </div>
             </div>
-            <div class="glass p-6 rounded-2xl border-l-4 border-cyan-500">
-                <p class="text-[10px] font-bold uppercase text-cyan-400 mb-1">Management</p>
-                <h4 class="text-xl font-black italic uppercase">RealWhiteYT</h4>
+
+            <div class="glass p-8 rounded-3xl border-l-4 border-amber-500 hover:scale-105 transition-transform sm:col-span-1">
+                <p class="text-[10px] font-bold uppercase text-amber-400 mb-2">Co-Owner</p>
+                <h4 class="text-2xl font-black italic uppercase mb-4">funnyboy</h4>
+                <div class="flex space-x-2">
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Co-Leader</span>
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Rivals Specialist</span>
+                </div>
             </div>
-            <div class="glass p-6 rounded-2xl border-l-4 border-gray-500">
-                <p class="text-[10px] font-bold uppercase text-gray-400 mb-1">Elite Member</p>
-                <h4 class="text-xl font-black italic uppercase italic">Member Name</h4>
+
+            <div class="glass p-8 rounded-3xl border-l-4 border-amber-500 hover:scale-105 transition-transform sm:col-span-1">
+                <p class="text-[10px] font-bold uppercase text-amber-400 mb-2">Co-Owner</p>
+                <h4 class="text-2xl font-black italic uppercase mb-4">abdullahweag</h4>
+                <div class="flex space-x-2">
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Co-Leader</span>
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Strategy</span>
+                </div>
             </div>
-            <div class="glass p-6 rounded-2xl border-l-4 border-gray-500 text-gray-600">
-                <p class="text-[10px] font-bold uppercase mb-1">Recruiting</p>
-                <h4 class="text-xl font-black italic uppercase">You?</h4>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="glass p-8 rounded-3xl border-l-4 border-cyan-500 hover:scale-105 transition-transform">
+                <p class="text-[10px] font-bold uppercase text-cyan-400 mb-2">Community Manager</p>
+                <h4 class="text-2xl font-black italic uppercase mb-4">HTX_Augustine</h4>
+                <div class="flex space-x-2">
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Management</span>
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Rivals Specialist</span>
+                </div>
+            </div>
+
+            <div class="glass p-8 rounded-3xl border-l-4 border-pink-500 hover:scale-105 transition-transform">
+                <p class="text-[10px] font-bold uppercase text-pink-400 mb-2">Community Manager</p>
+                <h4 class="text-2xl font-black italic uppercase mb-4">Real White</h4>
+                <div class="flex space-x-2">
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Management</span>
+                    <span class="text-[8px] px-2 py-1 bg-white/5 rounded-md text-gray-400">Media</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="p-12 border-t border-white/5 text-center text-gray-600 text-[10px] tracking-[0.4em] uppercase">
-        &copy; 2026 HTX CLAN • All Rights Reserved
+    <section id="about" class="max-w-7xl mx-auto px-6 py-32 border-t border-white/5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+            <div>
+                <h3 class="text-4xl font-black uppercase tracking-tighter mb-6">Built for Clan Wars</h3>
+                <p class="text-gray-400 mb-8 leading-relaxed">
+                    HTX is a high-performance squad dedicated entirely to Roblox Rivals. From climbing regional ranks to dominating clan wars, we focus on perfect teamwork, speed, and clean accuracy.
+                </p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <div class="text-3xl font-black text-purple-500">100%</div>
+                        <div class="text-[9px] uppercase font-bold text-gray-600 tracking-widest">Rivals Focused</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-cyan-400">Elite</div>
+                        <div class="text-[9px] uppercase font-bold text-gray-600 tracking-widest">Aim Strategy</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-pink-500">Active</div>
+                        <div class="text-[9px] uppercase font-bold text-gray-600 tracking-widest">Clan Wars</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass p-2 rounded-[40px]">
+                <div class="bg-gradient-to-br from-purple-900/40 to-cyan-900/40 w-full h-[400px] rounded-[38px] flex items-center justify-center border border-white/10">
+                    <span class="text-6xl font-black opacity-20 italic">ROBLOX RIVALS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="p-20 border-t border-white/5 text-center">
+        <h4 class="text-2xl font-black mb-8 tracking-tighter">HTX</h4>
+        <div class="flex justify-center space-x-6 mb-8 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+            <a href="#home" class="hover:text-white transition">Home</a>
+            <a href="#roster" class="hover:text-white transition">Roster</a>
+            <a href="https://www.youtube.com/@HTXRivalsClan" target="_blank" class="hover:text-red-500 transition text-red-400">YouTube</a>
+            <a href="https://discord.gg/VJaRcdVhQ" target="_blank" class="hover:text-white transition text-purple-400">Join Discord</a>
+        </div>
+        <p class="text-gray-700 text-[9px] tracking-[0.5em] uppercase">
+            &copy; 2026 HTX CLAN • Custom Crafted
+        </p>
     </footer>
+
+    <script>
+        const ring = document.getElementById('cursor-ring');
+        const dot = document.getElementById('cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            // Locks both custom elements together directly over the mouse path
+            ring.style.left = e.clientX + 'px';
+            ring.style.top = e.clientY + 'px';
+            
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+        });
+    </script>
 
 </body>
 </html>
