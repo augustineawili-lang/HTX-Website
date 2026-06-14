@@ -1,1 +1,13 @@
-
+{
+  "management": [
+    { "name": "heromaxlion", "role": "CLAN OWNER", "tags": ["LEADER", "COMPETITIVE"] },
+    { "name": "abdullahweag", "role": "CO-OWNER", "tags": ["CO-LEADER", "STRATEGY"] },
+    { "name": "HTX_Augustine", "role": "CO-OWNER", "tags": ["CO-LEADER", "MANAGEMENT"] },
+    { "name": "funnyboy", "role": "DIRECTOR", "tags": ["EXECUTIVE", "RIVALS SPECIALIST"] },
+    { "name": "Real White", "role": "@htx_realwhite", "tags": ["MEDIA", "CREATOR"] }
+  ],
+  "esports": [
+    { "name": "Draco", "role": "ESPORTS MEMBER", "tags": ["FRAGGER", "COMPETITIVE"] },
+    { "name": "notaimbotingbtw", "role": "ESPORTS MEMBER", "tags": ["AWPER / SNIPER", "COMPETITIVE"] }
+  ]
+}
