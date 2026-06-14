@@ -8,420 +8,144 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        body { 
-            font-family: 'Space Grotesk', sans-serif; 
-            background-color: #050505; 
-            color: #ffffff; 
-            overflow-x: hidden; 
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #050505;
         }
-        
-        /* HIDE DEFAULT WINDOWS CURSOR */
-        html, body, a, button, input {
-            cursor: none !important;
+        .text-glow-purple {
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
         }
-
-        /* SYSTEM SCANLINES (HTX STYLE) */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999;
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
+        .text-glow-cyan {
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
         }
-
-        /* CONTAINER FOR CUSTOM CURSOR COMPONENTS */
-        .cursor-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .htx-card {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .htx-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(135deg, rgba(25, 25, 25, 0.7) 0%, rgba(15, 15, 15, 0.9) 100%);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        #custom-cursor {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+            transition: transform 0.1s ease-out;
             pointer-events: none;
             z-index: 9999;
         }
-
-        /* THE OUTER PURPLE RING */
-        #cursor-ring {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #a855f7;
-            border-radius: 50%;
-            position: fixed;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-        }
-
-        /* THE CENTERED SOLID PURPLE DOT */
-        #cursor-dot {
-            width: 12px;
-            height: 12px;
-            background: #a855f7;
-            border-radius: 50%;
-            position: fixed;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            box-shadow: 0 0 20px #a855f7;
-        }
-
-        /* HTX RAW BORDERLESS GLASS CARDS */
-        .htx-card { 
-            background: rgba(10, 10, 10, 0.6); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.05);
-        }
-        .htx-card:hover {
-            border-color: rgba(168, 85, 247, 0.3);
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.05);
-        }
-        
-        /* ESPORTS SPECIFIC CARD HOVER GLOW */
-        .esports-card:hover {
-            border-color: rgba(6, 182, 212, 0.3);
-            box-shadow: 0 0 40px rgba(6, 182, 212, 0.05);
-        }
-
-        /* 4-GRID FEATURE CARDS BORDER TRICK */
-        .feature-grid-card {
-            background: #050505;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* TEXT OUTLINE EFFECT FOR TRANSLUCENT SECONDARY LOGO */
-        .text-outline {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
-        }
-
-        .text-glow-purple { text-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
-        .text-glow-cyan { text-shadow: 0 0 20px rgba(6, 182, 212, 0.6); }
     </style>
 </head>
-<body class="selection:bg-purple-600 selection:text-white">
+<body class="text-zinc-400 min-h-screen overflow-x-hidden selection:bg-purple-500/20 selection:text-purple-300">
 
-    <div class="cursor-wrapper">
-        <div id="cursor-ring"></div>
-        <div id="cursor-dot"></div>
-    </div>
+    <!-- Ambient Cursor Glow Tracker -->
+    <div id="custom-cursor" class="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full hidden md:block"></div>
 
-    <div class="fixed top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[160px] pointer-events-none"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[200px] pointer-events-none"></div>
-
-    <nav class="fixed top-0 w-full z-50 bg-[#050505]/60 backdrop-blur-xl border-b border-white/[0.03] px-8 py-5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold tracking-tighter text-glow-purple text-purple-500">HTX</a>
-            <div class="flex items-center space-x-10 text-[11px] font-bold tracking-[0.25em] uppercase text-zinc-500">
-                <a href="#home" class="hover:text-white transition duration-300">Home</a>
-                <a href="#roster" class="hover:text-white transition duration-300">Roster</a>
-                <a href="#about" class="hover:text-white transition duration-300">About</a>
-                <a href="https://www.youtube.com/@HTXRivalsClan" target="_blank" class="hover:text-red-500 transition duration-300">YouTube</a>
-                <a href="#esports" class="hover:text-cyan-400 transition duration-300 tracking-[0.25em]">Esports</a>
-                <a href="#apply" class="border border-purple-500/30 text-purple-400 px-6 py-2 rounded-none hover:bg-purple-600 hover:text-white hover:border-purple-600 transition duration-300 tracking-[0.3em] text-[10px]">JOIN</a>
-            </div>
+    <!-- HEADER / NAVIGATION (Updated to match image_36e1c5.png) -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-[#050505]/60 backdrop-blur-xl border-b border-white/[0.02]">
+        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+            <a href="#" class="text-white font-bold tracking-[0.2em] uppercase text-sm">HTX <span class="text-purple-500">CLAN</span></a>
+            <nav class="hidden md:flex items-center gap-8 text-[11px] font-bold tracking-[0.2em] uppercase">
+                <a href="#home" class="text-white hover:text-purple-400 transition-colors">HOME</a>
+                <a href="#roster" class="text-zinc-500 hover:text-white transition-colors">ROSTER</a>
+                <a href="#about" class="text-zinc-500 hover:text-white transition-colors">ABOUT</a>
+                <a href="#youtube" class="text-zinc-500 hover:text-white transition-colors">YOUTUBE</a>
+                <a href="#esports" class="text-zinc-500 hover:text-white transition-colors">ESPORTS</a>
+            </nav>
+            <a href="https://discord.gg/Vsc7vCDe" target="_blank" class="border border-purple-500/30 text-white px-5 py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-purple-500 hover:text-white transition-all duration-300">JOIN</a>
         </div>
-    </nav>
+    </header>
 
-    <section id="home" class="relative pt-72 pb-40 px-6 text-center max-w-5xl mx-auto min-h-screen flex flex-col justify-center items-center">
-        <p class="text-purple-500 text-[10px] tracking-[0.6em] uppercase font-bold mb-4 text-glow-purple">PROJECT GLOBAL DOMINATION</p>
-        <h2 class="text-7xl md:text-[11rem] font-bold uppercase mb-4 leading-none tracking-tight text-white select-none">
-            HTX CLAN
-        </h2>
-        <p class="text-zinc-500 text-sm md:text-base max-w-lg mx-auto tracking-wide mb-14 font-light">
-            An elite competitive division dominating <span class="text-zinc-200 font-bold">Roblox</span> and rewriting the meta inside <span class="text-purple-400 font-bold text-glow-purple">Rivals</span>.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-6 w-full max-w-md">
-            <a href="#roster" class="border border-white/10 text-white font-bold px-12 py-4 rounded-none hover:bg-white hover:text-black transition duration-300 text-[11px] tracking-[0.3em] uppercase w-full text-center">ROSTER</a>
-            <a href="#apply" class="bg-purple-600 text-white font-bold px-12 py-4 rounded-none hover:bg-purple-700 transition duration-300 text-[11px] tracking-[0.3em] uppercase w-full text-center text-glow-purple shadow-xl shadow-purple-600/10">APPLY</a>
+    <!-- HERO SECTION (Updated to match image_36e1c5.png taglines) -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center px-8 pt-20">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(24,24,27,0.5)_0%,rgba(5,5,5,1)_70%)]"></div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto">
+            <p class="text-purple-500 text-[11px] tracking-[0.5em] uppercase font-bold mb-6 text-glow-purple">PROJECT GLOBAL DOMINATION</p>
+            <h2 class="text-6xl md:text-9xl font-bold tracking-tighter text-white uppercase mb-8 leading-none">HTX CLAN</h2>
+            <p class="text-zinc-500 text-sm md:text-base max-w-2xl mx-auto tracking-wide font-light leading-relaxed mb-12">
+                An elite competitive division dominating <strong class="text-white">Roblox</strong> and rewriting the standard.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#roster" class="bg-purple-600 text-white px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-purple-500 transition-all duration-300">VIEW STAFF ROSTER</a>
+                <a href="#esports" class="border border-white/10 text-white px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300">COMPETITIVE LINEUP</a>
+            </div>
         </div>
     </section>
 
+    <!-- DYNAMIC MANAGEMENT ROSTER SECTION -->
     <section id="roster" class="max-w-7xl mx-auto px-8 py-32 border-t border-white/[0.03]">
         <div class="mb-20 text-center md:text-left">
             <p class="text-purple-500 text-[10px] tracking-[0.4em] uppercase font-bold mb-2">CURRENT PERSONNEL</p>
             <h3 class="text-4xl md:text-6xl font-bold uppercase tracking-tight text-white">THE ELITE ROSTER</h3>
         </div>
-
-        <div class="space-y-6">
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="htx-card p-10 rounded-none flex flex-col justify-between md:col-span-3 border-l-[3px] border-l-purple-500">
-                    <div>
-                        <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-purple-400 mb-2">CLAN OWNER</p>
-                        <h4 class="text-3xl font-bold uppercase tracking-tighter text-white">heromaxlion</h4>
-                    </div>
-                    <div class="mt-6 flex space-x-3 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                        <span class="bg-white/5 px-3 py-1">LEADER</span>
-                        <span class="bg-white/5 px-3 py-1">COMPETITIVE</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="htx-card p-10 rounded-none border-l-[3px] border-l-amber-500">
-                    <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400 mb-2">CO-OWNER</p>
-                    <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">funnyboy</h4>
-                    <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                        <span class="bg-white/5 px-3 py-1">CO-LEADER</span>
-                        <span class="bg-white/5 px-3 py-1">RIVALS SPECIALIST</span>
-                    </div>
-                </div>
-                <div class="htx-card p-10 rounded-none border-l-[3px] border-l-amber-500">
-                    <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400 mb-2">CO-OWNER</p>
-                    <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">abdullahweag</h4>
-                    <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                        <span class="bg-white/5 px-3 py-1">CO-LEADER</span>
-                        <span class="bg-white/5 px-3 py-1">STRATEGY</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="htx-card p-10 rounded-none border-l-[3px] border-l-zinc-500">
-                    <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400 mb-2">COMMUNITY MANAGER</p>
-                    <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">HTX_Augustine</h4>
-                    <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                        <span class="bg-white/5 px-3 py-1">MANAGEMENT</span>
-                        <span class="bg-white/5 px-3 py-1">RIVALS SPECIALIST</span>
-                    </div>
-                </div>
-                <div class="htx-card p-10 rounded-none border-l-[3px] border-l-zinc-500">
-                    <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400 mb-2">COMMUNITY MANAGER</p>
-                    <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">Real White</h4>
-                    <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                        <span class="bg-white/5 px-3 py-1">MANAGEMENT</span>
-                        <span class="bg-white/5 px-3 py-1">MEDIA</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <div id="management-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </section>
 
+    <!-- DYNAMIC ESPORTS SECTION -->
     <section id="esports" class="max-w-7xl mx-auto px-8 py-32 border-t border-white/[0.03]">
         <div class="mb-20 text-center md:text-left">
             <p class="text-cyan-400 text-[10px] tracking-[0.4em] uppercase font-bold mb-2 text-glow-cyan">COMPETITIVE LINEUP</p>
             <h3 class="text-4xl md:text-6xl font-bold uppercase tracking-tight text-white">ESPORTS TEAM</h3>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div class="htx-card esports-card p-10 rounded-none border-l-[3px] border-l-cyan-500">
-                <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-cyan-400 mb-2">ESPORTS MEMBER</p>
-                <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">ranga</h4>
-                <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                    <span class="bg-white/5 px-3 py-1">RIFLER</span>
-                    <span class="bg-white/5 px-3 py-1">COMPETITIVE</span>
-                </div>
-            </div>
-
-            <div class="htx-card esports-card p-10 rounded-none border-l-[3px] border-l-cyan-500">
-                <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-cyan-400 mb-2">ESPORTS MEMBER</p>
-                <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">Draco</h4>
-                <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                    <span class="bg-white/5 px-3 py-1">FRAGGER</span>
-                    <span class="bg-white/5 px-3 py-1">COMPETITIVE</span>
-                </div>
-            </div>
-
-            <div class="htx-card esports-card p-10 rounded-none border-l-[3px] border-l-cyan-500">
-                <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-cyan-400 mb-2">ESPORTS MEMBER</p>
-                <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">notaimbotingbtw</h4>
-                <div class="flex space-x-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
-                    <span class="bg-white/5 px-3 py-1">AWPER / SNIPER</span>
-                    <span class="bg-white/5 px-3 py-1">COMPETITIVE</span>
-                </div>
-            </div>
-
-        </div>
+        <div id="esports-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
     </section>
 
-    <section id="about" class="max-w-7xl mx-auto px-8 py-32 border-t border-white/[0.03]">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
-            
-            <div>
-                <h3 class="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-none mb-8 text-white select-none">
-                    MORE THAN <br>A CLAN.
-                </h3>
-                
-                <p class="text-zinc-400 text-sm md:text-[15px] leading-relaxed tracking-wide font-light mb-6">
-                    HTX is a content and gaming team established to dominate regional ladders. With a dedicated team of <span class="text-purple-400 font-bold">7+ content creators</span>, <span class="text-white font-bold">10+ esports members</span>, and a powerhouse pool of over <span class="text-white font-bold">100+ members</span>, HTX delivers high-quality gaming experiences and engaging entertainment across digital platforms.
-                </p>
-                
-                <p class="text-zinc-500 text-sm md:text-[15px] leading-relaxed tracking-wide font-light">
-                    We are driven by creativity, collaboration, and a shared passion for content that resonates. As HTX grows, we remain committed to innovation, consistency, and building a strong presence within the competitive Roblox Rivals gaming and entertainment community.
-                </p>
-            </div>
-
-            <div class="w-full">
-                <div class="bg-[#121214] w-full h-[320px] lg:h-[380px] border border-white/5 flex flex-col items-center justify-center relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-900/15 via-transparent to-transparent"></div>
-                    <svg class="w-20 h-20 text-zinc-700 mb-4 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-                    </svg>
-                    <span class="text-[10px] tracking-[0.5em] font-bold text-zinc-500 uppercase">HTX MULTIMEDIA PANEL</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-white/[0.05]">
-            
-            <div class="feature-grid-card p-10 hover:bg-zinc-900/20 transition duration-300">
-                <div class="text-purple-400 text-xl mb-4">🎮</div>
-                <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-2">GAMING FIRST</h4>
-                <p class="text-zinc-500 text-xs leading-relaxed tracking-wide font-light">Competitive esports at the highest level across multiple titles.</p>
-            </div>
-
-            <div class="feature-grid-card p-10 hover:bg-zinc-900/20 transition duration-300 md:border-l-0">
-                <div class="text-purple-400 text-xl mb-4">🎬</div>
-                <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-2">CONTENT DRIVEN</h4>
-                <p class="text-zinc-500 text-xs leading-relaxed tracking-wide font-light">High-quality entertainment and creative content across all platforms.</p>
-            </div>
-
-            <div class="feature-grid-card p-10 hover:bg-zinc-900/20 transition duration-300 border-t-0">
-                <div class="text-purple-400 text-xl mb-4">🤝</div>
-                <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-2">BUILT TOGETHER</h4>
-                <p class="text-zinc-500 text-xs leading-relaxed tracking-wide font-light">A brotherhood of creators and players who push each other forward.</p>
-            </div>
-
-            <div class="feature-grid-card p-10 hover:bg-zinc-900/20 transition duration-300 border-t-0 md:border-l-0">
-                <div class="text-purple-400 text-xl mb-4">🚀</div>
-                <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-2">ALWAYS GROWING</h4>
-                <p class="text-zinc-500 text-xs leading-relaxed tracking-wide font-light">Innovation, consistency, and relentless ambition – every single day.</p>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="apply" class="max-w-4xl mx-auto px-6 py-40 border-t border-white/[0.03] text-center flex flex-col items-center justify-center relative">
-        
-        <p class="text-purple-400 text-[11px] tracking-[0.4em] uppercase font-bold mb-6 text-glow-purple">
-            APPLICATIONS OPEN
-        </p>
-        
-        <div class="relative mb-10 select-none">
-            <h3 class="text-7xl md:text-[8rem] font-bold uppercase tracking-tight text-white leading-[0.85]">
-                JOIN
-            </h3>
-            <h3 class="text-7xl md:text-[8rem] font-bold uppercase tracking-tight text-outline leading-[0.85] mt-1">
-                HTX
-            </h3>
-        </div>
-
-        <p class="text-zinc-500 font-mono text-xs md:text-sm tracking-widest max-w-lg mb-12 leading-relaxed">
-            Think you have what it takes? Drop your tag and we'll be in touch within 48 hours.
-        </p>
-
-        <form id="applicationForm" class="w-full max-w-xl flex border border-white/10 p-0 bg-transparent focus-within:border-purple-500/50 transition duration-300">
-            <input 
-                type="text" 
-                id="playerTag"
-                placeholder="Your in-game tag..." 
-                required
-                class="w-full bg-transparent px-6 py-5 text-sm font-mono text-white placeholder-zinc-700 tracking-wider outline-none border-none"
-            >
-            <button 
-                type="submit"
-                id="submitBtn"
-                class="bg-purple-600 hover:bg-purple-700 text-black font-mono font-bold text-xs uppercase tracking-[0.25em] px-10 py-5 transition duration-300 whitespace-nowrap active:scale-95"
-            >
-                APPLY NOW
-            </button>
-        </form>
-
-    </section>
-
-    <footer class="p-16 border-t border-white/[0.03] bg-[#030303] text-center">
-        <h4 class="text-xl font-bold tracking-widest text-glow-purple text-purple-500 mb-6">HTX</h4>
-        <div class="flex justify-center space-x-10 mb-10 text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-500">
-            <a href="#home" class="hover:text-white transition duration-300">Home</a>
-            <a href="#roster" class="hover:text-white transition duration-300">Roster</a>
-            <a href="#about" class="hover:text-white transition duration-300">About</a>
-            <a href="https://www.youtube.com/@HTXRivalsClan" target="_blank" class="hover:text-red-500 transition duration-300">YouTube</a>
-            <a href="#esports" class="hover:text-cyan-400 transition duration-300">Esports</a>
-            <a href="https://discord.gg/VJaRcdVhQ" target="_blank" class="hover:text-white transition duration-300 text-purple-400">Discord</a>
-        </div>
-        <p class="text-zinc-600 text-[9px] tracking-[0.6em] uppercase">
-            &copy; 2026 HTX CLAN • SYSTEM DESIGN BY AUGUSTINE
-        </p>
+    <!-- FOOTER -->
+    <footer class="border-t border-white/[0.02] bg-[#020202] py-12 px-8 text-center text-xs tracking-widest text-zinc-600 uppercase font-bold">
+        <p>&copy; 2026 HTX CLAN. ALL RIGHTS RESERVED.</p>
     </footer>
 
+    <!-- LIVE ROSTER LOADER ENGINE & MOUSE TRACKER -->
     <script>
-        // CURSOR INSTANCING LAYERS
-        const ring = document.getElementById('cursor-ring');
-        const dot = document.getElementById('cursor-dot');
-
+        const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
-            ring.style.left = e.clientX + 'px';
-            ring.style.top = e.clientY + 'px';
-            
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
         });
 
-        // LIVE WEBHOOK API ROUTER Engine
-        document.getElementById('applicationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const tagInput = document.getElementById('playerTag');
-            const submitBtn = document.getElementById('submitBtn');
-            const originalBtnText = submitBtn.innerText;
-            
-            // AUTOMATIC LIVE DISCORD LINK PLUGGED IN 
-            const webhookUrl = "https://discord.com/api/webhooks/1505153443264729179/rgGmZlrbpX85ghlGTnYMqhMZdN2wjQw54te2lfKo-aDIyDXWHCD_2vSr4kP_VoJTLPTm";
+        fetch('./roster.json')
+            .then(response => response.json())
+            .then(data => {
+                const mgmtGrid = document.getElementById('management-grid');
+                const esportsGrid = document.getElementById('esports-grid');
 
-            // Freeze button execution state
-            submitBtn.disabled = true;
-            submitBtn.innerText = "SENDING...";
+                data.management.forEach((member) => {
+                    const isOwner = member.role === "CLAN OWNER";
+                    const cardClass = isOwner 
+                        ? "htx-card p-10 rounded-none flex flex-col justify-between md:col-span-2 border-l-[3px] border-l-purple-500"
+                        : `htx-card p-10 rounded-none border-l-[3px] ${member.role.includes("CO-OWNER") ? 'border-l-purple-400' : 'border-l-amber-500'}`;
 
-            // Embed Data Payload JSON formatting
-            const payload = {
-                embeds: [{
-                    title: "🚀 New Clan Application Received",
-                    color: 11030263, 
-                    fields: [
-                        {
-                            name: "In-Game Tag / Username",
-                            value: `\`${tagInput.value}\``,
-                            inline: false
-                        },
-                        {
-                            name: "Staff Action Required",
-                            value: "React with ✅ to **Accept** or ❌ to **Decline** this player.",
-                            inline: false
-                        }
-                    ],
-                    timestamp: new Date().toISOString(),
-                    footer: { text: "HTX Recruitment Engine" }
-                }]
-            };
+                    const tagBadges = member.tags.map(t => `<span class="bg-white/5 px-3 py-1">${t}</span>`).join('');
+                    
+                    mgmtGrid.innerHTML += `
+                        <div class="${cardClass}">
+                            <div>
+                                <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-purple-400 mb-2">${member.role}</p>
+                                <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">${member.name}</h4>
+                            </div>
+                            <div class="flex flex-wrap gap-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
+                                ${tagBadges}
+                            </div>
+                        </div>
+                    `;
+                });
 
-            // Post dispatch
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
+                data.esports.forEach(member => {
+                    const tagBadges = member.tags.map(t => `<span class="bg-white/5 px-3 py-1">${t}</span>`).join('');
+                    esportsGrid.innerHTML += `
+                        <div class="htx-card esports-card p-10 rounded-none border-l-[3px] border-l-cyan-500">
+                            <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-cyan-400 mb-2">${member.role}</p>
+                            <h4 class="text-2xl font-bold uppercase tracking-tighter text-white mb-4">${member.name}</h4>
+                            <div class="flex flex-wrap gap-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
+                                ${tagBadges}
+                            </div>
+                        </div>
+                    `;
+                });
             })
-            .then(response => {
-                if (response.ok) {
-                    alert("Application Sent! The HTX Management team will review your tag in Discord.");
-                    tagInput.value = ""; 
-                } else {
-                    alert("Webhook execution error. Please try applying manually on Discord.");
-                }
-            })
-            .catch(error => {
-                alert("Network communication error. Please try again.");
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalBtnText;
-            });
-        });
+            .catch(err => console.error("Error building live roster panel:", err));
     </script>
-
 </body>
 </html>
